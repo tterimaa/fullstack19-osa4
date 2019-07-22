@@ -4,9 +4,9 @@
   "description": "Fullstack MOOC osa 4",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "nodemon index.js",
+    "start": "NODE_ENV=production node index.js",
+    "test": "NODE_ENV=test jest --verbose --runInBand",
+    "watch": "NODE_ENV=development nodemon index.js",
     "lint": "eslint .",
     "fix": "eslint --fix ."
   },
@@ -20,6 +20,11 @@
   },
   "devDependencies": {
     "eslint": "^6.1.0",
-    "nodemon": "^1.19.1"
+    "jest": "^24.8.0",
+    "nodemon": "^1.19.1",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
