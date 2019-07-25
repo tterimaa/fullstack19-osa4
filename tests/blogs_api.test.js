@@ -22,6 +22,13 @@ const testBlog = {
   likes: 7,
 }
 
+const testBlogLikesNull = {
+  title: 'React patterns',
+  author: 'Michael Chan',
+  url: 'https://reactpatterns.com/',
+  likes: ''
+}
+
 test('notes are returned as json', async () => {
   await api
     .get('/api/blogs')
@@ -39,6 +46,15 @@ test('test post', async () => {
 
   const blogsAtEnd = await helper.blogsInDb()
   expect(blogsAtEnd.length).toBe(blogsAtStart.length + 1)
+})
+
+test('likes 0 if no value is given', async () => {
+  const response = await api
+    .post('/api/blogs')
+    .send(testBlogLikesNull)
+    .expect(200)
+
+  expect(response.body.likes).toBe(0)
 })
 
 test('id is defined', async () => {

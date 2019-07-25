@@ -6,8 +6,11 @@ blogsRouter.get('/', async (request, response) => {
   response.json(Blogs.map(blog => blog.toJSON()))
 })
   
-blogsRouter.post('/', async (request, response) => {
-  const blog = new Blog(request.body)
+blogsRouter.post('/', async (request, response, next) => {
+  let blog = new Blog(request.body)
+  if(blog.likes === null) {
+    blog.likes = 0
+  }
 
   try {
     const savedBlog = await blog.save()
