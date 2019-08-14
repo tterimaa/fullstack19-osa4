@@ -19,12 +19,63 @@ const initialBlogs = [
   }
 ]
 
+const testBlogLikesNull = {
+  title: 'React patterns',
+  author: 'Michael Chan',
+  url: 'https://reactpatterns.com/',
+  likes: ''
+}
+
+const testBlog = {
+  title: 'React patterns',
+  author: 'Michael Chan',
+  url: 'https://reactpatterns.com/',
+  likes: 7,
+}
+
+
+const blogWithoutTitle = {
+  title: '',
+  author: 'Michael Chan',
+  url: 'https://reactpatterns.com/',
+  likes: 1
+}
+  
+const blogWithoutUrl = {
+  title: 'Title',
+  author: 'Michael Chan',
+  url: '',
+  likes: 1
+}
+
+const idOfFirstBlog = () => {
+  return initialBlogs[0]._id
+}
+
+// const nonExistingId = async () => {
+//     const blog = new blog({ 
+//         title: 'willremovethissoon',
+//         author: 'aku ankka',
+//         url: 'example.com',
+//         likes: 1 
+//     })
+//     await blog.save()
+//     await blog.remove()
+  
+//     return blog._id.toString()
+//   }
+
 const blogsInDb = async () => {
   const blogs = await Blog.find({})
-  return blogs.map(blog => blog.toJSON)
+  const json = blogs.map(blog => blog.toJSON())
+  return json
 }
 
 module.exports = {
   blogsInDb,
-  initialBlogs
+  initialBlogs,
+  testBlog,
+  blogWithoutTitle,
+  blogWithoutUrl,
+  testBlogLikesNull
 }

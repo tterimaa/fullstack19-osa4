@@ -5,16 +5,47 @@ blogsRouter.get('/', async (request, response) => {
   const Blogs = await Blog.find({})
   response.json(Blogs.map(blog => blog.toJSON()))
 })
+
+blogsRouter.get('/:id', async (request, response, next) => {
+  try {
+    const blog = await Blog.findById(request.params.id)
+    if(blog) {
+      response.json(blog.toJSON)
+    } else {
+      response.status(404).end()
+    } 
+  } catch (exception) {
+    next(exception)
+  }
+})
   
 blogsRouter.post('/', async (request, response, next) => {
-  let blog = new Blog(request.body)
-  if(blog.likes === null) {
-    blog.likes = 0
+  const body = request.body
+
+  let blog = new Blog({
+    title: body.title,
+    author: body.author,
+    url: body.url,
+    likes: body.likes ? body.likes : 0
+  })
+
+  if(!blog.title || !blog.url) {
+    response.status(400).end()
+  } else {
+    try {
+      const savedBlog = await blog.save()
+      response.json(savedBlog.toJSON())
+    } catch (exception) {
+      next(exception)
+    }
   }
 
+})
+
+blogsRouter.delete('/:id', async (request, response, next) => {
   try {
-    const savedBlog = await blog.save()
-    response.json(savedBlog.toJSON())
+    await Blog.findByIdAndRemove(request.params.id)
+    response.status(204).end()
   } catch (exception) {
     next(exception)
   }
